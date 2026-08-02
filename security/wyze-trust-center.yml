@@ -1,0 +1,55 @@
+generated: '2026-08-02'
+method: searched
+probe: true
+url: https://www.wyze.com/pages/security-trust
+title: Wyze security
+notes: >-
+  Wyze operates a public security/trust hub rather than a vendor trust portal (no
+  SafeBase/Vanta-style document request flow, no downloadable audit reports). It names
+  device- and app-level certifications and third-party testing rather than enterprise
+  attestations. IMPORTANT ATTRIBUTION: the page cites "Using AWS infrastructure (SOC2 &
+  ISO compliance)" - that is the compliance posture of Wyze's cloud PROVIDER, not a Wyze
+  attestation. Wyze does not publish a SOC 2 report, ISO 27001 certificate, PCI DSS AOC,
+  HIPAA or FedRAMP status of its own, and none is claimed here.
+certifications:
+- name: ioXt Alliance certification
+  scope: Wyze iOS & Android apps
+  note: Wyze describes ioXt as the leading connected-device security certification.
+- name: Google MASA (Mobile Application Security Assessment)
+  scope: Android app
+- name: UL / FCC / Energy Star
+  scope: specific hardware lines (e.g. light bulbs)
+third_party_testing:
+- provider: NCC Group
+  activity: penetration testing (passed)
+- provider: ReFirm Labs
+  activity: third-party hardware security testing (passed)
+- provider: Bitdefender
+  activity: in-depth penetration testing of Wyze Cam v3
+inherited_infrastructure_compliance:
+- provider: Amazon Web Services
+  claims: [SOC 2, ISO]
+  attributed_to: AWS, not Wyze
+security_controls_published:
+- mandatory 2-factor authentication for all customers
+- Lacework deployed for cloud infrastructure security
+- AWS WAF and Amazon GuardDuty in use
+- VerifiedView - a hashed user ID embedded into every video, photo and livestream so only
+  the rightful account owner can access the content
+- live stream and video encryption between mobile device, Wyze product and AWS cloud
+privacy_position: >-
+  Wyze states it does not sell personal information for money, while disclosing that
+  sharing certain activity data with advertising and business partners may constitute a
+  "sale" under CCPA and similar state privacy laws.
+related_pages:
+  privacy_policy: https://www.wyze.com/policies/privacy-policy
+  terms_of_service: https://www.wyze.com/policies/terms-of-service
+  vulnerability_disclosure: https://www.wyze.com/pages/wyzes-vulnerability-disclosure
+  suspicious_activity: https://www.wyze.com/pages/security-report
+  security_transparency_report: https://www.wyze.com/pages/response-to-3-29-22-security-report
+evidence:
+- source: https://www.wyze.com/pages/security-trust
+  http_status: 200
+  keywords: [security, trust, ioXt, Google MASA, penetration testing, SOC2, ISO, 2-factor]
+x-evidence:
+  fetched: '2026-08-02'

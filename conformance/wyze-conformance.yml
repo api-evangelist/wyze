@@ -1,0 +1,125 @@
+generated: '2026-08-02'
+method: searched
+source: >-
+  https://www.wyze.com/.well-known/openid-configuration, https://www.wyze.com/.well-known/ucp,
+  https://www.wyze.com/llms.txt, live MCP tools/list probes, and
+  https://www.wyze.com/pages/security-trust
+notes: >-
+  Wyze publishes no OpenAPI, so no conformance claim below is derived from a spec. Each
+  entry is either evidenced by a live document/probe or explicitly marked as not
+  conforming. Conformance here means "this cross-cutting standard is implemented on a
+  Wyze-served surface", including the standards Wyze inherits by running its storefront
+  on Shopify - those are served from Wyze hosts and are recorded with that attribution.
+standards:
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI/Swagger document at any probed path on www.wyze.com,
+    developer-api-console.wyze.com, api.wyzecam.com, auth-prod.api.wyze.com,
+    account.wyze.com or support.wyze.com (see well-known/wyze-well-known.yml).
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook specification is published.
+- id: graphql
+  conforms: false
+  evidence: No public /graphql surface found on any Wyze host.
+- id: oidc-discovery
+  conforms: true
+  evidence: >-
+    /.well-known/openid-configuration returns a complete OIDC discovery document
+    (well-known/wyze-openid-configuration.json), issuer
+    https://shopify.com/authentication/58004504738, endpoints on account.wyze.com.
+  attribution: Shopify customer accounts, served from Wyze hosts
+- id: oauth2
+  conforms: true
+  evidence: >-
+    authorization_code and refresh_token grants published in the discovery document;
+    response_types_supported [code].
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server returns 200 with server metadata.
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported [S256].
+- id: rfc7523-jwt-bearer
+  conforms: true
+  evidence: >-
+    grant_types_supported includes urn:ietf:params:oauth:grant-type:jwt-bearer.
+- id: model-context-protocol
+  conforms: true
+  evidence: >-
+    Two MCP servers answer JSON-RPC 2.0 tools/list with real tools and inputSchema -
+    https://www.wyze.com/api/mcp (5 tools) and
+    https://account.wyze.com/customer/api/mcp (4 tools). Saved verbatim in mcp/.
+- id: ucp-universal-commerce-protocol
+  conforms: true
+  version: '2026-04-08'
+  evidence: >-
+    /.well-known/ucp declares supported versions 2026-04-08 and 2026-01-23, the
+    dev.ucp.shopping MCP service, cart/checkout/fulfillment/discount/catalog capabilities
+    and Google Pay, Shopify Card and Shop Pay payment handlers.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    https://www.wyze.com/llms.txt returns 200 text/markdown; mirrored at /agents.md and
+    listed in a dedicated sitemap_agentic_discovery.xml.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 (or 401) on every
+    Wyze host. No agent card exists and none was authored.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt returns 404 on wyze.com, wyzecam.com, www.wyze.com,
+    account.wyze.com and support.wyze.com. Wyze does publish a disclosure policy and a
+    security@wyze.com contact, just not via security.txt.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    No application/problem+json anywhere; three proprietary error envelopes observed
+    (errors/wyze-problem-types.yml), one of which returns HTTP 200 on failure.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header support and no deprecation policy published.
+- id: json-api
+  conforms: false
+  evidence: Responses are plain JSON objects, not JSON:API documents.
+- id: odata
+  conforms: false
+- id: scim2
+  conforms: false
+- id: fhir
+  conforms: false
+- id: idempotency-key
+  conforms: false
+  evidence: No idempotency header or retry-safety contract is documented on any surface.
+- id: ioxt
+  conforms: true
+  evidence: >-
+    https://www.wyze.com/pages/security-trust names ioXt certification for the Wyze iOS
+    and Android apps.
+- id: google-masa
+  conforms: true
+  evidence: >-
+    https://www.wyze.com/pages/security-trust names Google MASA certification for the
+    Android app.
+- id: soc2
+  conforms: false
+  evidence: >-
+    The trust page cites SOC 2 only as the compliance posture of AWS, its infrastructure
+    provider. Wyze publishes no SOC 2 report of its own.
+- id: iso-27001
+  conforms: false
+  evidence: >-
+    Same as SOC 2 - referenced as AWS infrastructure compliance, not a Wyze certification.
+- id: pci-dss
+  conforms: false
+  evidence: >-
+    Card payment is handled by Shopify/Shop Pay/Google Pay handlers declared in
+    /.well-known/ucp; Wyze publishes no PCI DSS attestation of its own.
+- id: ccpa
+  conforms: partial
+  evidence: >-
+    https://www.wyze.com/pages/security-trust and the privacy policy address CCPA "sale"
+    definitions and Wyze's position on not selling personal information for money.

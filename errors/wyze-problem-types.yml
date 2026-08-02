@@ -1,0 +1,124 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  live unauthenticated probes of https://auth-prod.api.wyze.com and
+  https://api.wyzecam.com, plus the response examples published in
+  https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+format: proprietary
+rfc9457: false
+notes: >-
+  Wyze publishes no OpenAPI and no error reference, so nothing here is derived from a
+  spec. Every envelope below was observed on a live request. No application/problem+json
+  is used anywhere. Wyze runs THREE different error envelopes across its own hosts, and
+  the api.wyzecam.com envelope is the notable one for agents: it returns HTTP 200 with a
+  non-zero `code` in the body for application errors, so HTTP status alone is not a
+  reliable success signal on that host. Only codes actually observed are listed - the
+  full Wyze error-code registry is not published.
+
+envelopes:
+- id: auth-service-error
+  host: auth-prod.api.wyze.com
+  http_status_carries_error: true
+  content_type: application/json
+  fields:
+    description: human-readable message
+    requestId: UUID correlation id echoed per request
+    errorCode: numeric Wyze error code
+  example_observed:
+    request: POST /api/user/login with an invalid Keyid/Apikey pair
+    http_status: 400
+    body:
+      description: Invalid credentials, please check username, password, keyid or apikey
+      errorCode: 1000
+  tracing_field: requestId
+
+- id: auth-service-gateway-error
+  host: auth-prod.api.wyze.com
+  http_status_carries_error: true
+  content_type: application/json
+  fields:
+    timestamp: ISO 8601 timestamp
+    status: numeric HTTP status, repeated
+    error: HTTP reason phrase
+    message: message string (often empty)
+    path: the requested path
+  example_observed:
+    request: GET /.well-known/security.txt
+    http_status: 401
+    body:
+      status: 401
+      error: Unauthorized
+      path: /.well-known/security.txt
+  note: >-
+    Spring-style default error body returned for any unmatched or unauthenticated path on
+    the auth host.
+
+- id: app-api-envelope
+  host: api.wyzecam.com
+  http_status_carries_error: false
+  content_type: application/json
+  fields:
+    code: string status code - "1" indicates success, other values indicate errors
+    msg: human-readable message
+    ts: epoch-millisecond timestamp
+    data: payload object (empty on error)
+    traceId: hex correlation id
+  example_observed:
+    request: POST /app/user/refresh_token with an empty body
+    http_status: 200
+    body:
+      code: '1001'
+      msg: refresh_token cannot be null
+  tracing_field: traceId
+  agent_warning: >-
+    Errors are returned with HTTP 200. Clients and agents MUST inspect the body `code`
+    field rather than the HTTP status to detect failure on this host.
+
+problems:
+- code: '1000'
+  host: auth-prod.api.wyze.com
+  http_status: 400
+  title: Invalid credentials
+  detail: Invalid credentials, please check username, password, keyid or apikey
+  remediation: >-
+    Verify the Keyid and Apikey headers against the pair shown in the Wyze Developer API
+    Console, confirm the account email, and confirm the password is hashed as
+    md5(md5(md5(password))) per the Wyze documentation.
+  observed: '2026-08-02'
+- code: '5000'
+  host: auth-prod.api.wyze.com
+  http_status: 400
+  title: Internal Error
+  detail: Internal Error
+  remediation: >-
+    Returned when the login request is missing the Keyid/Apikey headers entirely. Supply
+    both headers.
+  observed: '2026-08-02'
+- code: '1001'
+  host: api.wyzecam.com
+  http_status: 200
+  title: Missing required parameter
+  detail: refresh_token cannot be null
+  remediation: >-
+    Include refresh_token plus the documented app_ver, app_version, phone_id, sc, sv and
+    ts fields in the /app/user/refresh_token request body.
+  observed: '2026-08-02'
+- code: '-32001'
+  host: www.wyze.com
+  surface: /api/ucp/mcp
+  http_status: 422
+  title: UCP discovery failed
+  detail: 'invalid_profile_url: Unable to fetch agent profile: Missing profile uri'
+  remediation: >-
+    Present a resolvable UCP agent profile URI before calling the UCP shopping MCP
+    endpoint. JSON-RPC 2.0 error object, not an HTTP problem document.
+  observed: '2026-08-02'
+
+rate_limiting:
+  documented: true
+  detail: >-
+    Wyze documents that the login endpoint is rate limited and instructs callers not to
+    call it repeatedly to obtain tokens; llms.txt separately instructs agents to back off
+    on 429 responses from the storefront MCP endpoint.
+  numeric_limits_published: false
+  headers_documented: false

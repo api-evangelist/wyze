@@ -1,0 +1,73 @@
+generated: '2026-08-02'
+method: searched
+source: >-
+  https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key and
+  https://support.wyze.com/hc/en-us/articles/360015979872-Service-Status-Known-Issues
+notes: >-
+  Wyze runs its developer surface as a support-documented capability rather than a
+  versioned developer platform. There is no published API version scheme, no deprecation
+  policy, no Sunset/Deprecation header support documented, and no SLA. What Wyze does
+  publish is a maintained Service Status & Known Issues page and a set of credential
+  lifetimes. Everything below is observed or published - nothing is inferred from a spec,
+  because Wyze publishes no OpenAPI.
+versioning:
+  scheme: uri-path
+  observed_prefixes:
+  - /api/ on auth-prod.api.wyze.com
+  - /app/ and /app/v2/ on api.wyzecam.com
+  current: unversioned/undeclared
+  policy_published: false
+  docs: null
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No RFC 8594 Sunset or Deprecation header support is documented, and no deprecation
+    policy page exists. Wyze has historically retired device services (for example
+    original Wyze Cam v1 cloud support) through support announcements and email rather
+    than an API deprecation policy.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: https://support.wyze.com/hc/en-us/articles/360015979872-Service-Status-Known-Issues
+  type: support-article
+  format: reverse-chronological dated incident log
+  last_updated_observed: '2026-07-07'
+  note: >-
+    Not a hosted status platform (no Statuspage/Instatus/Better Stack, no machine-readable
+    status feed, no subscribe endpoint). Wyze posts dated incident entries with PT
+    timestamps directly in a Zendesk help-centre article; a JSON copy of the article is
+    reachable at
+    https://support.wyze.com/api/v2/help_center/en-us/articles/360015979872.json
+  recent_incidents_observed:
+  - date: '2026-07-06'
+    summary: Descriptive Alerts not working; root cause located and resolved 2026-07-07.
+  - date: '2026-04-08'
+    summary: Issues accessing the Wyze app; resolved after app refresh.
+  - date: '2026-03-26'
+    summary: Issues with the Wyze app and devices; cause found and resolved.
+  - date: '2026-03-06'
+    summary: Event Videos, Thumbnails and AI Tags failing; fix implemented.
+  - date: '2026-02-17'
+    summary: Wyze Automations outage; resolved.
+credential_lifecycle:
+  api_key:
+    lifetime: 1 year from creation
+    per_user_limit: 1
+    rotation: delete then recreate in the Developer API Console
+    notification: Wyze emails the account when a new API key is generated
+  access_token:
+    lifetime: 2 days
+  refresh_token:
+    lifetime: 30 days
+changelog:
+  published: false
+  note: >-
+    A search of all 3,064 Wyze help-centre articles found no dated API or platform
+    changelog / release-notes article. Firmware and app release notes are surfaced
+    in-app. No ChangeLog artifact was written rather than fabricate one.
+deprecated_operations: []

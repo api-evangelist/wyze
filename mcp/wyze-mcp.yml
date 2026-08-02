@@ -1,0 +1,115 @@
+generated: '2026-08-02'
+method: searched
+status: published
+source: >-
+  https://www.wyze.com/llms.txt (published tool flow) plus live MCP tools/list calls
+  against https://www.wyze.com/api/mcp, https://account.wyze.com/customer/api/mcp and
+  https://www.wyze.com/api/ucp/mcp
+notes: >-
+  Wyze runs its storefront on Shopify and therefore serves agent-facing MCP endpoints
+  from its own hosts. Three MCP surfaces were probed; two answer tools/list anonymously
+  and their real tool definitions (including per-tool JSON inputSchema) are saved
+  verbatim in this directory. The third (the Universal Commerce Protocol shopping
+  service) requires an agent profile URI and rejected anonymous introspection, so only
+  the tool NAMES published in llms.txt are recorded for it - no schemas were invented.
+  These are commerce/agent surfaces; they do not expose Wyze device control. The Wyze
+  device cloud API (api.wyzecam.com) has no MCP server.
+
+servers:
+- name: wyze-storefront-mcp
+  title: Wyze Storefront MCP Server
+  transport: http
+  url: https://www.wyze.com/api/mcp
+  auth: none (anonymous tools/list and tool calls)
+  introspection: open
+  tools_file: wyze-storefront-mcp-tools.json
+  x-evidence:
+    fetched: '2026-08-02'
+    method: 'POST jsonrpc 2.0 tools/list'
+    http_status: 200
+    tool_count: 5
+  tools:
+  - name: search_catalog
+    description: >-
+      Search for products from the online store, hosted on Shopify. Supports natural
+      language queries, filter criteria, or both; results are paginated.
+  - name: get_cart
+    description: >-
+      Get the cart including items, shipping options, discount info, and checkout url
+      for a given cart id.
+  - name: update_cart
+    description: >-
+      Perform updates to a cart, including adding/removing/updating line items, buyer
+      information, shipping details, and discount codes.
+  - name: get_product_details
+    description: >-
+      Look up a product by ID; the options parameter selects a specific variant for the
+      product card.
+  - name: search_shop_policies_and_faqs
+    description: Used to get facts about the store's policies, products, or services.
+
+- name: wyze-customer-account-mcp
+  title: Wyze Customer Account MCP Server
+  transport: http
+  url: https://account.wyze.com/customer/api/mcp
+  auth: >-
+    tools/list answers anonymously; the tools themselves operate against a logged-in
+    Shopify customer account session (see scopes/wyze-scopes.yml,
+    customer-account-mcp-api:full)
+  introspection: open
+  tools_file: wyze-customer-account-mcp-tools.json
+  x-evidence:
+    fetched: '2026-08-02'
+    method: 'POST jsonrpc 2.0 tools/list'
+    http_status: 200
+    tool_count: 4
+  tools:
+  - name: get_most_recent_order_status
+    description: Gets the status of the customer's most recent order.
+  - name: get_order_status
+    description: >-
+      Fetches a specific order by order number for a logged-in customer and returns
+      status details about the order.
+  - name: get_store_credit_balances
+    description: Fetches the customer's store credit balances if they have any.
+  - name: request_return
+    description: Allows a customer to request a return for an order.
+
+- name: wyze-ucp-shopping-mcp
+  title: Wyze UCP Shopping MCP Endpoint
+  transport: http
+  url: https://www.wyze.com/api/ucp/mcp
+  canonical_url: https://wyzecom.myshopify.com/api/ucp/mcp
+  auth: >-
+    gated - anonymous tools/list returns JSON-RPC error -32001 "UCP discovery failed"
+    (invalid_profile_url / "Missing profile uri"). The caller must present a resolvable
+    UCP agent profile before tools are listed.
+  introspection: gated
+  schema: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
+  discovery: well-known/wyze-ucp.json
+  x-evidence:
+    fetched: '2026-08-02'
+    method: 'POST jsonrpc 2.0 tools/list'
+    http_status: 422
+    error_code: -32001
+  tools_source: >-
+    https://www.wyze.com/llms.txt - names only, published by Wyze; input schemas require
+    an authenticated/profiled UCP introspection and were NOT derived or invented.
+  tools:
+  - name: search_catalog
+    description: Find products matching the buyer's intent. (name published in llms.txt)
+  - name: create_cart
+    description: Add desired items to a cart. (name published in llms.txt)
+  - name: create_checkout
+    description: Start the purchase flow. (name published in llms.txt)
+  - name: update_checkout
+    description: Set shipping address and method. (name published in llms.txt)
+  - name: complete_checkout
+    description: >-
+      Finalize the purchase; llms.txt states the buyer must explicitly approve payment.
+      (name published in llms.txt)
+
+related:
+  llms_txt: llms/wyze-llms.txt
+  agents_md: llms/wyze-agents.md
+  ucp_discovery: well-known/wyze-ucp.json

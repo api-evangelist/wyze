@@ -1,0 +1,100 @@
+generated: '2026-08-02'
+method: searched
+source: >-
+  https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key,
+  https://www.wyze.com/llms.txt, https://www.wyze.com/.well-known/ucp and live probes of
+  auth-prod.api.wyze.com, api.wyzecam.com and the Wyze MCP endpoints
+notes: >-
+  Cross-cutting request/response semantics for the Wyze surfaces. Wyze publishes no
+  OpenAPI and no API style guide, so this artifact records only what is documented or was
+  directly observed. Where a convention is absent, it is recorded as absent rather than
+  assumed. NOTE: no idempotency contract of any kind is documented or observed on any
+  Wyze surface, so this repo deliberately carries NO `Idempotency` pointer.
+
+authentication:
+  style: >-
+    API Key + Key ID headers exchanged for bearer access/refresh tokens on the device
+    cloud API; OIDC authorization code + PKCE on the storefront customer account.
+  detail: authentication/wyze-authentication.yml
+  scopes: scopes/wyze-scopes.yml
+
+idempotency:
+  supported: false
+  header: null
+  documented: false
+  note: >-
+    No Idempotency-Key header, no request-deduplication window, and no retry-safety
+    guidance is published for any Wyze surface. Write operations on the device cloud API
+    are not documented as idempotent.
+
+pagination:
+  device_api:
+    documented: false
+    note: no pagination contract is published for the Wyze device cloud API
+  storefront_mcp:
+    style: cursor
+    note: >-
+      The search_catalog tool description states results are paginated with initial
+      results limited, and exposes pagination parameters in its published inputSchema
+      (see mcp/wyze-storefront-mcp-tools.json).
+
+request_tracing:
+  auth_host:
+    field: requestId
+    location: response body
+    format: UUID
+  app_api_host:
+    field: traceId
+    location: response body
+    format: hex string
+  note: >-
+    Correlation ids are returned in the response BODY, not in a response header. There is
+    no documented client-supplied request id.
+
+versioning:
+  style: uri-path (undeclared)
+  detail: lifecycle/wyze-lifecycle.yml
+
+error_envelope:
+  count: 3
+  summary: >-
+    auth-prod.api.wyze.com uses {description, requestId, errorCode} with a real HTTP
+    status; api.wyzecam.com returns HTTP 200 and signals failure through a body `code`
+    field; the UCP MCP endpoint uses JSON-RPC 2.0 error objects.
+  rfc9457: false
+  detail: errors/wyze-problem-types.yml
+
+rate_limit_signaling:
+  headers_documented: false
+  status_codes: [429]
+  note: >-
+    llms.txt tells agents the MCP endpoint is rate limited per IP and to back off on 429.
+    The login endpoint is documented as rate limited with no published numbers and no
+    documented RateLimit-* or Retry-After header contract.
+
+content_types:
+  request: application/json
+  response: application/json
+  mcp_accept: 'application/json, text/event-stream'
+
+transport:
+  protocols:
+    - JSON over HTTPS (device cloud API)
+    - JSON-RPC 2.0 over HTTP (MCP servers, streamable HTTP)
+  tls: security/wyze-domain-security.yml
+
+password_handling:
+  note: >-
+    Wyze's published login example requires the account password to be sent as
+    md5(md5(md5(password))) in the request body. This is a documented Wyze convention,
+    recorded here as observed; it is not an API Evangelist recommendation.
+
+agent_conventions:
+  source: llms/wyze-llms.txt
+  rules:
+  - Checkout requires contemporaneous human approval; agents must not complete payment
+    without explicit buyer consent.
+  - Respect per-IP rate limits on the MCP endpoint and back off on 429.
+  - Pass context.address_country and context.currency for accurate pricing and
+    availability.
+  - The canonical agent-facing store description is /agents.md; /llms.txt mirrors it.

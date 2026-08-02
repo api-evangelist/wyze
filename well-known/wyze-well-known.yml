@@ -1,0 +1,90 @@
+generated: '2026-08-02'
+method: searched
+source: live probes of /.well-known/* on every Wyze host in apis.yml
+notes: >-
+  The Wyze storefront (www.wyze.com) runs on Shopify, so its /.well-known surface is
+  Shopify-provided but genuinely served from the wyze.com origin: the OIDC/OAuth
+  discovery documents describe Shopify customer accounts issued under Wyze's own
+  account.wyze.com endpoints, and /.well-known/ucp is the store's Universal Commerce
+  Protocol merchant profile. The Wyze device/cloud API hosts (api.wyzecam.com,
+  auth-prod.api.wyze.com) publish no /.well-known documents at all. No security.txt
+  (RFC 9116) is published on any Wyze host, and no A2A agent card was found on any host.
+hosts:
+- host: https://www.wyze.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: wyze-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: wyze-oauth-authorization-server.json
+  - path: /.well-known/ucp
+    status: 200
+    content_type: application/json
+    file: wyze-ucp.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.wyzecam.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://auth-prod.api.wyze.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 401
+    note: host answers 401 Unauthorized for every unmatched path; no document published
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+- host: https://account.wyze.com
+  documents:
+  - path: /authentication/.well-known/jwks.json
+    status: 200
+    note: JWKS referenced by the openid-configuration jwks_uri; not saved (rotating keys)
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://developer-api-console.wyze.com
+  documents:
+  - path: /.well-known/*
+    status: 403
+    note: S3-backed static console returns AccessDenied XML for all non-index paths
+- host: https://support.wyze.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+security_txt: none
+agent_card: none
+x-evidence:
+  fetched: '2026-08-02'
+  probes: 60

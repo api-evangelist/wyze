@@ -1,23 +1,177 @@
 aid: wyze
 name: Wyze
-description: 'Wyze is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Wyze Labs, Inc. is a Kirkland, Washington consumer smart-home company
+  founded in 2017 by former Amazon employees, known for value-priced connected hardware:
+  indoor and outdoor security cameras, video doorbells, smart locks, contact and motion
+  sensors, plugs, bulbs and light strips, robot vacuums, thermostats, sprinkler controllers,
+  scales and wearables. Devices are operated through the Wyze app and backed by cloud
+  services sold as subscriptions (Cam Plus, Cam Unlimited, Wyze Home Monitoring). Wyze
+  does not publish a general-purpose public developer platform, but it does operate a
+  first-party Developer API Console at developer-api-console.wyze.com that issues a
+  personal API Key / Key ID pair so owners can authenticate against the Wyze cloud API
+  (auth-prod.api.wyze.com and api.wyzecam.com) from Home Assistant, Homebridge and other
+  third-party integrations. Its Shopify-hosted storefront additionally exposes agent-facing
+  commerce surfaces: a published llms.txt/agents.md, a Universal Commerce Protocol (UCP)
+  discovery document, and two live Model Context Protocol servers.'
 url: https://raw.githubusercontent.com/api-evangelist/wyze/refs/heads/main/apis.yml
+image: https://www.wyze.com/cdn/shop/files/Wyze_Ecosystem_Share.png?v=1781726389
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
 - Company
-apis: []
+- Smart Home
+- Internet of Things
+- Home Security
+- Cameras
+- Consumer Electronics
+- Home Automation
+- Video
+- Sensors
+- Commerce
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: wyze:developer-api
+  name: Wyze Developer API
+  description: 'The first-party Wyze cloud API reached with a personal API Key and Key
+    ID generated from the Wyze Developer API Console. Authentication posts credentials
+    to auth-prod.api.wyze.com to exchange the key pair for an access token (valid 2 days)
+    and refresh token (valid 30 days), which are then used against the api.wyzecam.com
+    application endpoints that back the Wyze app. Wyze publishes the key-issuance and
+    login/refresh flow in its support documentation but does not publish a full endpoint
+    reference or a machine-readable OpenAPI description.'
+  humanURL: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+  baseURL: https://api.wyzecam.com
+  tags:
+  - Smart Home
+  - Internet of Things
+  - Devices
+  - Authentication
+  properties:
+  - type: Documentation
+    url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+  - type: DeveloperPortal
+    url: https://developer-api-console.wyze.com/
+  - type: Authentication
+    url: authentication/wyze-authentication.yml
+- aid: wyze:storefront-mcp
+  name: Wyze Storefront MCP Server
+  description: 'A live, anonymously reachable Model Context Protocol server on the Wyze
+    storefront host that lets agents search the Wyze product catalog, read and update a
+    cart, look up product detail, and query store policies and FAQs. The tool list and
+    per-tool JSON input schemas were returned by an unauthenticated MCP tools/list call
+    and are captured verbatim in mcp/.'
+  humanURL: https://www.wyze.com/llms.txt
+  baseURL: https://www.wyze.com/api/mcp
+  tags:
+  - Model Context Protocol
+  - Commerce
+  - Agents
+  properties:
+  - type: MCPServer
+    url: mcp/wyze-mcp.yml
+  - type: LLMsTxt
+    url: llms/wyze-llms.txt
+- aid: wyze:customer-account-mcp
+  name: Wyze Customer Account MCP Server
+  description: 'A live Model Context Protocol server on account.wyze.com exposing customer
+    order-status lookup, store-credit balances and return requests. tools/list answers
+    anonymously; the tools themselves operate on a logged-in customer session. The tool
+    list and input schemas are captured verbatim in mcp/.'
+  humanURL: https://www.wyze.com/llms.txt
+  baseURL: https://account.wyze.com/customer/api/mcp
+  tags:
+  - Model Context Protocol
+  - Commerce
+  - Orders
+  properties:
+  - type: MCPServer
+    url: mcp/wyze-mcp.yml
+- aid: wyze:ucp
+  name: Wyze UCP Commerce Endpoint
+  description: 'The Universal Commerce Protocol (UCP) merchant surface published by the
+    Wyze storefront. The /.well-known/ucp discovery document declares supported UCP
+    versions, the dev.ucp.shopping MCP service endpoint, cart/checkout/fulfillment/discount/
+    catalog capabilities and the Google Pay, Shopify Card and Shop Pay payment handlers.
+    The UCP MCP endpoint itself rejects anonymous tools/list with a required agent-profile
+    error, so its tool schemas are gated; the tool names are the ones published in
+    llms.txt.'
+  humanURL: https://www.wyze.com/llms.txt
+  baseURL: https://www.wyze.com/api/ucp/mcp
+  tags:
+  - Commerce
+  - Agents
+  - Universal Commerce Protocol
+  properties:
+  - type: WellKnown
+    url: well-known/wyze-ucp.json
 common:
+- type: DomainSecurity
+  url: security/wyze-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/wyze_stock/
+  url: https://www.wyze.com
+- type: DeveloperPortal
+  url: https://developer-api-console.wyze.com/
+- type: Documentation
+  url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+- type: GettingStarted
+  url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+- type: Login
+  url: https://developer-api-console.wyze.com/#/apikey/view
+- type: Support
+  url: https://support.wyze.com/hc/en-us
+- type: Community
+  url: https://forums.wyze.com/
+- type: Blog
+  url: https://www.wyze.com/blogs/news
+- type: GitHubOrganization
+  url: https://github.com/wyzelabs-inc
+- type: Pricing
+  url: https://www.wyze.com/pages/service-plans
+- type: TermsOfService
+  url: https://www.wyze.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.wyze.com/policies/privacy-policy
+- type: StatusPage
+  url: https://support.wyze.com/hc/en-us/articles/360015979872-Service-Status-Known-Issues
+- type: Security
+  url: https://www.wyze.com/pages/wyzes-vulnerability-disclosure
+- type: TrustCenter
+  url: security/wyze-trust-center.yml
+- type: Compliance
+  url: https://www.wyze.com/pages/security-trust
+- type: LLMsTxt
+  url: llms/wyze-llms.txt
+- type: MCPServer
+  url: mcp/wyze-mcp.yml
+- type: WellKnown
+  url: well-known/wyze-well-known.yml
+- type: Packages
+  url: packages/wyze-packages.yml
+- type: Authentication
+  url: authentication/wyze-authentication.yml
+- type: OAuthScopes
+  url: scopes/wyze-scopes.yml
+- type: Conventions
+  url: conventions/wyze-conventions.yml
+- type: Lifecycle
+  url: lifecycle/wyze-lifecycle.yml
+- type: Conformance
+  url: conformance/wyze-conformance.yml
+- type: ErrorCatalog
+  url: errors/wyze-problem-types.yml
+- type: VulnerabilityDisclosure
+  url: security/wyze-vulnerability-disclosure.yml
+x-enrichment:
+  date: '2026-08-02'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

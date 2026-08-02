@@ -1,0 +1,108 @@
+generated: '2026-08-02'
+method: searched
+source: >-
+  https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key and
+  https://www.wyze.com/.well-known/openid-configuration, plus live probes of
+  auth-prod.api.wyze.com and api.wyzecam.com
+docs: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+notes: >-
+  Wyze publishes no OpenAPI, so nothing here is derived from a spec - every scheme below
+  is taken from Wyze's own published documentation or from a live, unauthenticated probe.
+  Two entirely separate authentication models exist: (1) the device/cloud API, which uses
+  a personal API Key + Key ID pair exchanged for bearer tokens; and (2) the Shopify-backed
+  storefront customer account, which is a standards-compliant OIDC/OAuth 2.0 authorization
+  code + PKCE surface with a published discovery document.
+summary:
+  types: [apiKey, http, oauth2, openIdConnect]
+  api_key_in: [header]
+  oauth2_flows: [authorizationCode, refreshToken, jwt-bearer]
+  mfa: >-
+    Wyze mandates 2-factor authentication for all customer accounts (per
+    https://www.wyze.com/pages/security-trust); the login response carries mfa_options,
+    mfa_details, sms_session_id and email_session_id fields.
+
+schemes:
+- name: WyzeApiKeyPair
+  type: apiKey
+  in: header
+  parameter_names: [Keyid, Apikey]
+  api: wyze:developer-api
+  endpoint: https://auth-prod.api.wyze.com/api/user/login
+  description: >-
+    A personal API Key and API Key ID generated from the Wyze Developer API Console at
+    https://developer-api-console.wyze.com/#/apikey/view. Both are sent as HTTP headers
+    (Keyid, Apikey) on the login request along with a JSON body carrying the account
+    email and a triple-MD5 hashed password. The credential is per-user, not per-app.
+  constraints:
+    keys_per_user: 1
+    key_lifetime: 1 year from creation
+    rotation: >-
+      to rotate, delete the existing key in the console and create a new one; Wyze emails
+      the account when a key is generated
+    rate_limited: >-
+      Wyze documents that the login endpoint is rate limited and instructs callers not to
+      repeatedly call it to obtain tokens; no numeric limit is published
+
+- name: WyzeAccessToken
+  type: http
+  scheme: bearer
+  api: wyze:developer-api
+  description: >-
+    The access token returned by the login exchange (prefix observed in Wyze's published
+    example as "lvtx."). Used against the api.wyzecam.com application endpoints.
+  token_lifetime: 2 days
+
+- name: WyzeRefreshToken
+  type: http
+  scheme: bearer
+  api: wyze:developer-api
+  endpoint: https://api.wyzecam.com/app/user/refresh_token
+  description: >-
+    The refresh token returned by the login exchange, POSTed to
+    /app/user/refresh_token with the documented app_ver / app_version / phone_id / sc /
+    sv constants ("wyze_developer_api") plus a ts timestamp, to mint a new access token
+    and refresh token pair.
+  token_lifetime: 30 days
+
+- name: WyzeCustomerAccountOIDC
+  type: openIdConnect
+  openIdConnectUrl: https://www.wyze.com/.well-known/openid-configuration
+  api: wyze:customer-account-mcp
+  source: well-known/wyze-openid-configuration.json
+  issuer: https://shopify.com/authentication/58004504738
+  description: >-
+    Shopify customer-accounts OIDC, served from Wyze's own hosts. Backs the storefront
+    login and the customer account MCP server.
+  endpoints:
+    authorization: https://account.wyze.com/authentication/oauth/authorize
+    token: https://account.wyze.com/authentication/oauth/token
+    end_session: https://account.wyze.com/authentication/logout
+    jwks: https://account.wyze.com/authentication/.well-known/jwks.json
+  flows:
+  - flow: authorizationCode
+    pkce: [S256]
+  - flow: refreshToken
+  - flow: 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+  token_endpoint_auth_methods: [client_secret_basic]
+  id_token_signing_alg: [RS256]
+  response_types: [code]
+  scopes: scopes/wyze-scopes.yml
+
+- name: WyzeUCPAgentProfile
+  type: apiKey
+  in: request
+  api: wyze:ucp
+  description: >-
+    The Universal Commerce Protocol MCP endpoint at /api/ucp/mcp requires the calling
+    agent to present a resolvable agent profile URI; anonymous JSON-RPC tools/list is
+    rejected with error -32001 invalid_profile_url / "Missing profile uri". The exact
+    header/parameter name is not published by Wyze and was not guessed.
+  observed_status: 422
+
+unauthenticated_surfaces:
+- surface: https://www.wyze.com/api/mcp
+  note: storefront MCP server; tools/list and catalog/cart tools answer with no credentials
+- surface: https://www.wyze.com/.well-known/ucp
+  note: UCP merchant discovery document, public
+- surface: https://www.wyze.com/llms.txt
+  note: agent instructions, public

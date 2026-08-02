@@ -1,0 +1,70 @@
+generated: '2026-08-02'
+method: searched
+source: >-
+  npm, PyPI, RubyGems, crates.io, pkg.go.dev, NuGet, Packagist registry searches plus
+  the Wyze support documentation and the verified github.com/wyzelabs-inc organization
+summary: >-
+  Wyze publishes NO first-party client library in any package registry. The verified
+  GitHub organization github.com/wyzelabs-inc exists and controls wyze.com but has zero
+  public repositories. Every client library below is community-maintained and is recorded
+  with official: false. Because no official SDK exists, this repo deliberately does NOT
+  carry an `SDKs` pointer in apis.yml - that would misrepresent Wyze's developer surface.
+official_sdk_count: 0
+packages:
+- language: python
+  registry: pypi
+  name: wyze-sdk
+  url: https://pypi.org/project/wyze-sdk/
+  source: https://github.com/shauntarves/wyze-sdk
+  install: pip install wyze-sdk
+  maintainer: Shaun Tarves
+  official: false
+  note: >-
+    Community "Wyze Labs API Platform SDK for Python" - a reverse-engineered client for
+    the same api.wyzecam.com endpoints the Wyze app uses. Authenticates with the API Key
+    / Key ID pair issued by the official Wyze Developer API Console.
+  docs: https://wyze-sdk.readthedocs.io/
+- language: python
+  registry: pypi
+  name: wyzeapy
+  url: https://pypi.org/project/wyzeapy/
+  install: pip install wyzeapy
+  official: false
+  note: Community library for interacting with Wyze devices; used by Home Assistant integrations.
+- language: javascript
+  registry: npm
+  name: wyze-api
+  url: https://www.npmjs.com/package/wyze-api
+  source: https://github.com/jfarmer08/wyze-api
+  install: npm install wyze-api
+  maintainer: Allen Farmer
+  official: false
+  note: Explicitly self-described as "An unofficial API wrapper for Wyze products".
+- language: javascript
+  registry: npm
+  name: wyze-node
+  url: https://www.npmjs.com/package/wyze-node
+  source: https://github.com/noelportugal/wyze-node
+  install: npm install wyze-node
+  maintainer: Noel Portugal
+  official: false
+  note: Explicitly self-described as "An unoficial API wrapper for Wyze products".
+negative_results:
+- registry: npm
+  query: '@wyze/*'
+  result: no first-party scope published
+- registry: npm
+  query: wyze
+  result: >-
+    the npm package named "wyze" is an unrelated Discord bot CLI (github.com/wyzeinc),
+    not Wyze Labs
+- registry: rubygems
+  result: no first-party gem
+- registry: crates.io
+  result: no first-party crate
+- registry: nuget
+  result: no first-party package
+- registry: pkg.go.dev
+  result: no first-party module
+- host: github.com/wyzelabs-inc
+  result: verified org, 0 public repositories

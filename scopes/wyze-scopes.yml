@@ -1,0 +1,48 @@
+generated: '2026-08-02'
+method: searched
+source: https://www.wyze.com/.well-known/openid-configuration
+file: well-known/wyze-openid-configuration.json
+notes: >-
+  Wyze publishes no OpenAPI, so no scopes could be derived from a spec. The scopes below
+  are the complete scopes_supported list published in the OIDC discovery document served
+  from the wyze.com origin for Shopify-backed Wyze customer accounts. The Wyze device
+  /cloud API (api.wyzecam.com) is API-key + bearer-token based and has NO scope surface -
+  it is intentionally absent here rather than represented with invented scopes.
+schemes:
+- name: WyzeCustomerAccountOIDC
+  type: openIdConnect
+  issuer: https://shopify.com/authentication/58004504738
+  source: well-known/wyze-openid-configuration.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://account.wyze.com/authentication/oauth/authorize
+    tokenUrl: https://account.wyze.com/authentication/oauth/token
+    pkce: [S256]
+  - flow: refreshToken
+    tokenUrl: https://account.wyze.com/authentication/oauth/token
+scopes:
+- scope: openid
+  description: >-
+    Standard OpenID Connect scope; requests an ID token asserting the subject of the
+    authenticated Wyze customer account.
+  flows: [authorizationCode]
+  sources: [well-known/wyze-openid-configuration.json]
+- scope: email
+  description: >-
+    Releases the email and email_verified claims for the authenticated customer account.
+  flows: [authorizationCode]
+  sources: [well-known/wyze-openid-configuration.json]
+- scope: customer-account-api:full
+  description: >-
+    Full access to the Shopify Customer Account API for the signed-in Wyze customer -
+    orders, addresses, payment methods and profile.
+  flows: [authorizationCode]
+  sources: [well-known/wyze-openid-configuration.json]
+- scope: customer-account-mcp-api:full
+  description: >-
+    Full access to the customer-account MCP surface at
+    https://account.wyze.com/customer/api/mcp - order status, store credit balances and
+    return requests on behalf of the signed-in customer.
+  flows: [authorizationCode]
+  sources: [well-known/wyze-openid-configuration.json]
+claims_supported: [iss, sub, aud, exp, iat, nonce, sid, email, email_verified]
