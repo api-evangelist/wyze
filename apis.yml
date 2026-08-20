@@ -27,6 +27,17 @@ tags:
 - Smart Home
 - Internet of Things
 - Home Security
+- Camera
+- Consumer Electronics
+- Home Automation
+- Video
+- Sensors
+- Commerce
+tags_raw:
+- Company
+- Smart Home
+- Internet of Things
+- Home Security
 - Cameras
 - Consumer Electronics
 - Home Automation
@@ -72,6 +83,10 @@ apis:
   humanURL: https://www.wyze.com/llms.txt
   baseURL: https://www.wyze.com/api/mcp
   tags:
+  - MCP
+  - Commerce
+  - Agents
+  tags_raw:
   - Model Context Protocol
   - Commerce
   - Agents
@@ -89,6 +104,10 @@ apis:
   humanURL: https://www.wyze.com/llms.txt
   baseURL: https://account.wyze.com/customer/api/mcp
   tags:
+  - MCP
+  - Commerce
+  - Order
+  tags_raw:
   - Model Context Protocol
   - Commerce
   - Orders
