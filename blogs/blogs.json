@@ -2,13 +2,20 @@
   "repo": "wyze",
   "feeds": [
     {
+      "source": "https://forums.wyze.com/posts.rss",
+      "feed_url": "https://forums.wyze.com/posts.rss",
+      "title": "",
+      "saved": 1,
+      "method": "feed"
+    },
+    {
       "source": "https://forums.wyze.com/",
       "feed_url": "https://forums.wyze.com/posts.rss",
       "title": "",
-      "saved": 13,
+      "saved": 0,
       "method": "discovered"
     }
   ],
-  "post_count": 38,
-  "fetched": "2026-08-15T12:11:08Z"
+  "post_count": 52,
+  "fetched": "2026-08-22T20:20:02Z"
 }
