@@ -14,6 +14,17 @@ description: 'Wyze Labs, Inc. is a Kirkland, Washington consumer smart-home comp
   commerce surfaces: a published llms.txt/agents.md, a Universal Commerce Protocol (UCP)
   discovery document, and two live Model Context Protocol servers.'
 url: https://raw.githubusercontent.com/api-evangelist/wyze/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.wyze.com/cdn/shop/files/Wyze_Ecosystem_Share.png?v=1781726389
 x-type: company
 x-source: harvest:secondary-market
