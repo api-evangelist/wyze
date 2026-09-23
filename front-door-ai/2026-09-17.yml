@@ -1,0 +1,30 @@
+# Front Door AI Index — wyze — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: wyze
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.wyze.com
+  final_host: www.wyze.com
+  ownership: own
+  owner: wyze
+  shares_host_with:
+  - wyzecam
+  inherited_from: null
+  verdict: scored
+  score: 5
+  host_score: 5
+  density: 3.09
+  words: 1619
+  tiers:
+    agentic: 1
+    core: 4
+    model: 0
+  ambiguous: 23
+  top_terms:
+    smart: 20
+    AI: 4
+    automation: 2
+    AI assistant: 1
+    agent: 1
