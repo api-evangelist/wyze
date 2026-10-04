@@ -125,6 +125,9 @@ apis:
     url: mcp/wyze-mcp.yml
   - type: LLMsTxt
     url: llms/wyze-llms.txt
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-mcp
 - aid: wyze:customer-account-mcp
   name: Wyze Customer Account MCP Server
   description: 'A live Model Context Protocol server on account.wyze.com exposing customer
@@ -144,6 +147,9 @@ apis:
   properties:
   - type: MCPServer
     url: mcp/wyze-mcp.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: customer-account-mcp
 - aid: wyze:ucp
   name: Wyze UCP Commerce Endpoint
   description: 'The Universal Commerce Protocol (UCP) merchant surface published by the
@@ -162,6 +168,9 @@ apis:
   properties:
   - type: WellKnown
     url: well-known/wyze-ucp.json
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 common:
 - type: DomainSecurity
   url: security/wyze-domain-security.yml
