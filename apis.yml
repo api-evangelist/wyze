@@ -1,5 +1,7 @@
 aid: wyze
+
 name: Wyze
+
 description: 'Wyze Labs, Inc. is a Kirkland, Washington consumer smart-home company
   founded in 2017 by former Amazon employees, known for value-priced connected hardware:
   indoor and outdoor security cameras, video doorbells, smart locks, contact and motion
@@ -13,7 +15,9 @@ description: 'Wyze Labs, Inc. is a Kirkland, Washington consumer smart-home comp
   third-party integrations. Its Shopify-hosted storefront additionally exposes agent-facing
   commerce surfaces: a published llms.txt/agents.md, a Universal Commerce Protocol (UCP)
   discovery document, and two live Model Context Protocol servers.'
+
 url: https://raw.githubusercontent.com/api-evangelist/wyze/refs/heads/main/apis.yml
+
 deliveryModel:
   model: saas
   open_source: false
@@ -25,6 +29,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -39,14 +44,23 @@ accessModel:
   - security
   generated: '2026-09-02'
   method: derived
+
 image: https://www.wyze.com/cdn/shop/files/Wyze_Ecosystem_Share.png?v=1781726389
+
 x-type: company
+
 x-source: harvest:secondary-market
+
 x-tier: profiled
+
 x-tier-reason: enrichment-pipeline
+
 specificationVersion: '0.23'
+
 created: '2026-08-02'
+
 modified: '2026-08-02'
+
 tags:
 - Company
 - Smart Home
@@ -58,6 +72,7 @@ tags:
 - Video
 - Sensors
 - Commerce
+
 tags_raw:
 - Company
 - Smart Home
@@ -69,11 +84,71 @@ tags_raw:
 - Video
 - Sensors
 - Commerce
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
+common:
+- type: Hosts
+  url: hosts/wyze-hosts.yml
+- type: Vendors
+  url: vendors/wyze-vendors.yml
+- type: DomainSecurity
+  url: security/wyze-domain-security.yml
+- type: Website
+  url: https://www.wyze.com
+- type: DeveloperPortal
+  url: https://developer-api-console.wyze.com/
+- type: Documentation
+  url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+- type: GettingStarted
+  url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
+- type: Login
+  url: https://developer-api-console.wyze.com/#/apikey/view
+- type: Support
+  url: https://support.wyze.com/hc/en-us
+- type: Community
+  url: https://forums.wyze.com/
+- type: Blog
+  url: https://www.wyze.com/blogs/news
+- type: GitHubOrganization
+  url: https://github.com/wyzelabs-inc
+- type: Pricing
+  url: https://www.wyze.com/pages/service-plans
+- type: TermsOfService
+  url: https://www.wyze.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.wyze.com/policies/privacy-policy
+- type: StatusPage
+  url: https://support.wyze.com/hc/en-us/articles/360015979872-Service-Status-Known-Issues
+- type: Security
+  url: https://www.wyze.com/pages/wyzes-vulnerability-disclosure
+- type: TrustCenter
+  url: security/wyze-trust-center.yml
+- type: Compliance
+  url: https://www.wyze.com/pages/security-trust
+- type: LLMsTxt
+  url: llms/wyze-llms.txt
+- type: MCPServer
+  url: mcp/wyze-mcp.yml
+- type: WellKnown
+  url: well-known/wyze-well-known.yml
+- type: Authentication
+  url: authentication/wyze-authentication.yml
+- type: OAuthScopes
+  url: scopes/wyze-scopes.yml
+- type: Conventions
+  url: conventions/wyze-conventions.yml
+- type: Lifecycle
+  url: lifecycle/wyze-lifecycle.yml
+- type: Conformance
+  url: conformance/wyze-conformance.yml
+- type: VulnerabilityDisclosure
+  url: security/wyze-vulnerability-disclosure.yml
+
 apis:
 - aid: wyze:developer-api
   name: Wyze Developer API
@@ -171,65 +246,16 @@ apis:
   x-surface: platform-generated
   x-platform: shopify
   x-platform-surface: ucp
-common:
-- type: DomainSecurity
-  url: security/wyze-domain-security.yml
-- type: Website
-  url: https://www.wyze.com
-- type: DeveloperPortal
-  url: https://developer-api-console.wyze.com/
-- type: Documentation
-  url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
-- type: GettingStarted
-  url: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
-- type: Login
-  url: https://developer-api-console.wyze.com/#/apikey/view
-- type: Support
-  url: https://support.wyze.com/hc/en-us
-- type: Community
-  url: https://forums.wyze.com/
-- type: Blog
-  url: https://www.wyze.com/blogs/news
-- type: GitHubOrganization
-  url: https://github.com/wyzelabs-inc
-- type: Pricing
-  url: https://www.wyze.com/pages/service-plans
-- type: TermsOfService
-  url: https://www.wyze.com/policies/terms-of-service
-- type: PrivacyPolicy
-  url: https://www.wyze.com/policies/privacy-policy
-- type: StatusPage
-  url: https://support.wyze.com/hc/en-us/articles/360015979872-Service-Status-Known-Issues
-- type: Security
-  url: https://www.wyze.com/pages/wyzes-vulnerability-disclosure
-- type: TrustCenter
-  url: security/wyze-trust-center.yml
-- type: Compliance
-  url: https://www.wyze.com/pages/security-trust
-- type: LLMsTxt
-  url: llms/wyze-llms.txt
-- type: MCPServer
-  url: mcp/wyze-mcp.yml
-- type: WellKnown
-  url: well-known/wyze-well-known.yml
-- type: Packages
-  url: packages/wyze-packages.yml
-- type: Authentication
-  url: authentication/wyze-authentication.yml
-- type: OAuthScopes
-  url: scopes/wyze-scopes.yml
-- type: Conventions
-  url: conventions/wyze-conventions.yml
-- type: Lifecycle
-  url: lifecycle/wyze-lifecycle.yml
-- type: Conformance
-  url: conformance/wyze-conformance.yml
-- type: ErrorCatalog
-  url: errors/wyze-problem-types.yml
-- type: VulnerabilityDisclosure
-  url: security/wyze-vulnerability-disclosure.yml
 x-enrichment:
-  date: '2026-08-02'
-  status: enriched
-  artifacts_added: 19
-  pass: local-v1
+  date: '2026-10-20'
+  status: nochange
+  artifacts_added: 0
+  pass: local-v5
+x-coverage:
+  state: gated
+  reason: customer-only-docs
+  detail: Wyze's cloud API (api.wyzecam.com) is usable only with a personal API Key issued to device owners at developer-api-console.wyze.com, and Wyze publishes no OpenAPI or public reference for it.
+  evidence:
+  - url: https://www.wyze.com
+    status: 200
+  checked: '2026-10-20'
