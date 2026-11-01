@@ -64,33 +64,112 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Wyze Labs, Inc. is a Kirkland, Washington consumer smart-home company founded in 2017 by
-former Amazon employees, selling value-priced connected hardware — security cameras, video
-doorbells, locks, sensors, plugs, bulbs, robot vacuums, thermostats, sprinkler controllers,
-scales and wearables — operated through the Wyze app and backed by subscription cloud
-services (Cam Plus, Cam Unlimited, Wyze Home Monitoring).
+Wyze Labs, Inc. is a Kirkland, Washington consumer smart-home company founded in 2017 by former Amazon employees, known for value-priced connected hardware: indoor and outdoor security cameras, video doorbells, smart locks, contact and motion sensors, plugs, bulbs and light strips, robot vacuums, thermostats, sprinkler controllers, scales and wearables. Devices are operated through the Wyze app and backed by cloud services sold as subscriptions (Cam Plus, Cam Unlimited, Wyze Home Monitoring). Wyze does not publish a general-purpose public developer platform, but it does operate a first-party Developer API Console at developer-api-console.wyze.com that issues a personal API Key / Key ID pair so owners can authenticate against the Wyze cloud API (auth-prod.api.wyze.com and api.wyzecam.com) from Home Assistant, Homebridge and other third-party integrations. Its Shopify-hosted storefront additionally exposes agent-facing commerce surfaces: a published llms.txt/agents.md, a Universal Commerce Protocol (UCP) discovery document, and two live Model Context Protocol servers.
 
-- Website: https://www.wyze.com
-- Developer API Console: https://developer-api-console.wyze.com/
-- API key documentation: https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key
-- Security & trust: https://www.wyze.com/pages/security-trust
+**Areas:** Company · Smart Home · IoT · Home Security · Camera · Consumer Electronics · Home Automation · Video · Sensors · Commerce
 
-## API surface
+## Wyze on APIs.io
 
-Wyze does **not** publish an OpenAPI, AsyncAPI, GraphQL schema or A2A agent card, and has
-no first-party SDK in any package registry. It does operate:
+Everything profiled for Wyze is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/wyze/](https://apis.io/providers/wyze/)** — or go straight to one of the APIs or properties below.
 
-| Surface | Host | Contract |
-|---|---|---|
-| Wyze Developer API | `api.wyzecam.com` / `auth-prod.api.wyze.com` | Support-article documented; personal API Key + Key ID exchanged for bearer tokens |
-| Storefront MCP server | `www.wyze.com/api/mcp` | Live MCP `tools/list` — 5 tools, captured verbatim |
-| Customer Account MCP server | `account.wyze.com/customer/api/mcp` | Live MCP `tools/list` — 4 tools, captured verbatim |
-| UCP shopping endpoint | `www.wyze.com/api/ucp/mcp` | Universal Commerce Protocol `2026-04-08`; `tools/list` gated behind an agent profile |
+### APIs (4)
 
-Notable for agents: the `api.wyzecam.com` host returns **HTTP 200 on failure** and signals
-errors through a body `code` field — see `errors/wyze-problem-types.yml`.
+- [Wyze Developer API](https://apis.io/apis/wyze/developer-api/) — The first-party Wyze cloud API reached with a personal API Key and Key ID generated from the Wyze Developer API Console. Authentication posts credentials to…
+- [Wyze Storefront MCP Server](https://apis.io/apis/wyze/storefront-mcp/) — A live, anonymously reachable Model Context Protocol server on the Wyze storefront host that lets agents search the Wyze product catalog, read and update a…
+- [Wyze Customer Account MCP Server](https://apis.io/apis/wyze/customer-account-mcp/) — A live Model Context Protocol server on account.wyze.com exposing customer order-status lookup, store-credit balances and return requests. tools/list…
+- [Wyze UCP Commerce Endpoint](https://apis.io/apis/wyze/ucp/) — The Universal Commerce Protocol (UCP) merchant surface published by the Wyze storefront. The /.well-known/ucp discovery document declares supported UCP…
 
-## Artifacts
+### Published properties
 
-`llms/` · `mcp/` · `well-known/` · `packages/` · `authentication/` · `scopes/` ·
-`conventions/` · `errors/` · `lifecycle/` · `conformance/` · `security/`
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [wyze-mcp.yml](https://apis.io/servers/wyze/wyze-mcp-yml/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Wyze Authentication](https://apis.io/security/wyze/wyze-authentication/)
+- [Wyze Domain Security](https://apis.io/security/wyze/wyze-domain-security/)
+- [Wyze Trust Center](https://apis.io/security/wyze/wyze-trust-center/)
+- [Wyze Vulnerability Disclosure](https://apis.io/security/wyze/wyze-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Wyze Scopes](https://apis.io/scopes/wyze/wyze-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.wyze.com)
+- [Documentation](https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key)
+- [Getting started](https://support.wyze.com/hc/en-us/articles/16129834216731-Creating-an-API-Key)
+- [Pricing](https://www.wyze.com/pages/service-plans)
+- [Support](https://support.wyze.com/hc/en-us)
+- [Blog](https://www.wyze.com/blogs/news)
+- [Security](https://www.wyze.com/pages/wyzes-vulnerability-disclosure)
+- [Compliance](https://www.wyze.com/pages/security-trust)
+- [Terms of service](https://www.wyze.com/policies/terms-of-service)
+- [Privacy policy](https://www.wyze.com/policies/privacy-policy)
+- [GitHub](https://github.com/wyzelabs-inc)
+- [Status](https://support.wyze.com/hc/en-us/articles/360015979872-Service-Status-Known-Issues)
+
+## API Evangelist rating
+
+**Kin Score 39.2** — thin · rubric 0.24.0 · scored 2026-10-20
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 28.9 |
+| Developer ergonomics | 50.0 |
+| Access clarity | 53.9 |
+
+**Agent readiness 13.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/wyze/](https://apis.io/providers/wyze/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Wyze: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/wyze/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
